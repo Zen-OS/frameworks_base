@@ -15,9 +15,13 @@
 
 package com.android.systemui.qs.tiles;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.UserHandle;
+import android.provider.Settings;
+import android.service.quicksettings.Tile;
 
-import com.android.internal.util.du.Utils;
+import com.android.internal.util.zen.Utils;
 import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
 import com.android.systemui.qs.QSHost;
 import com.android.systemui.plugins.qs.QSTile.BooleanState;
@@ -27,15 +31,17 @@ import com.android.systemui.R;
 /** Quick settings tile: Screenshot **/
 public class ScreenshotTile extends QSTileImpl<BooleanState> {
 
-    private boolean mRegion = false;
+    private boolean mRegion;
 
     public ScreenshotTile(QSHost host) {
         super(host);
+        mRegion = Settings.System.getIntForUser(mContext.getContentResolver(),
+                Settings.System.SCREENSHOT_DEFAULT_MODE, 0, UserHandle.USER_CURRENT) == 1;
     }
 
     @Override
     public int getMetricsCategory() {
-        return MetricsEvent.SPARKS;
+        return MetricsEvent.CHI;
     }
 
     @Override
@@ -49,6 +55,9 @@ public class ScreenshotTile extends QSTileImpl<BooleanState> {
     @Override
     public void handleClick() {
         mRegion = !mRegion;
+        Settings.System.putIntForUser(mContext.getContentResolver(),
+                Settings.System.SCREENSHOT_DEFAULT_MODE, mRegion ? 1 : 0,
+                UserHandle.USER_CURRENT);
         refreshState();
     }
 
