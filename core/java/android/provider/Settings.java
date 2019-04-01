@@ -4178,7 +4178,7 @@ public final class Settings {
         public static final String PREFER_BLACK_THEMES = "prefer_black_themes";
 
         /**
-         * Whether to change the transparency of the qs panel
+         * Transparency of the qs panel
          * @hide
          */
         public static final String QS_PANEL_BG_ALPHA = "qs_panel_bg_alpha";
@@ -4188,7 +4188,7 @@ public final class Settings {
                 ANY_INTEGER_VALIDATOR;
 
         /**
-         * Whether to change the color of the qs panel
+         * Color of the qs panel
          * @hide
          */
         public static final String QS_PANEL_BG_COLOR = "qs_panel_bg_color";
@@ -4196,6 +4196,26 @@ public final class Settings {
         /** @hide */
         private static final Validator QS_PANEL_BG_COLOR_VALIDATOR =
                 ANY_INTEGER_VALIDATOR;
+
+        /**
+         * Color of the qs panel evaluated from wallpaper
+         * @hide
+         */
+        public static final String QS_PANEL_BG_COLOR_WALL = "qs_panel_bg_color_wall";
+
+        /** @hide */
+        private static final Validator QS_PANEL_BG_COLOR_WALL_VALIDATOR =
+                ANY_INTEGER_VALIDATOR;
+
+        /**
+         * Whether to change the color of the qs panel based on wallpaper
+         * @hide
+         */
+        public static final String QS_PANEL_BG_USE_WALL = "qs_panel_bg_use_wall";
+
+        /** @hide */
+        private static final Validator QS_PANEL_BG_USE_WALL_VALIDATOR =
+                BOOLEAN_VALIDATOR;
 
         /**
          * Whether to show the battery info on the lockscreen while charging
@@ -4374,6 +4394,8 @@ public final class Settings {
             NOTIFICATION_LIGHT_PULSE,
             QS_PANEL_BG_ALPHA,
             QS_PANEL_BG_COLOR,
+            QS_PANEL_BG_COLOR_WALL,
+            QS_PANEL_BG_USE_WALL,
         };
 
         /**
@@ -4492,6 +4514,8 @@ public final class Settings {
             PRIVATE_SETTINGS.add(WEATHER_LOCKSCREEN_UNIT);
             PRIVATE_SETTINGS.add(QS_PANEL_BG_ALPHA);
             PRIVATE_SETTINGS.add(QS_PANEL_BG_COLOR);
+            PRIVATE_SETTINGS.add(QS_PANEL_BG_COLOR_WALL);
+            PRIVATE_SETTINGS.add(QS_PANEL_BG_USE_WALL);
         }
 
         /**
@@ -4585,6 +4609,8 @@ public final class Settings {
             VALIDATORS.put(WEATHER_LOCKSCREEN_UNIT, WEATHER_LOCKSCREEN_UNIT_VALIDATOR);
             VALIDATORS.put(QS_PANEL_BG_ALPHA, QS_PANEL_BG_ALPHA_VALIDATOR);
             VALIDATORS.put(QS_PANEL_BG_COLOR, QS_PANEL_BG_COLOR_VALIDATOR);
+            VALIDATORS.put(QS_PANEL_BG_COLOR_WALL, QS_PANEL_BG_COLOR_WALL_VALIDATOR);
+            VALIDATORS.put(QS_PANEL_BG_USE_WALL, QS_PANEL_BG_USE_WALL_VALIDATOR);
         }
 
         /**
