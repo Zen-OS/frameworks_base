@@ -2244,11 +2244,13 @@ public class StatusBar extends SystemUI implements DemoMode,
         setThemeStateFromList(enable, getThemePkgs("android.theme.common"));
     }
 
-    private void setIconTintOverlay() {
+    private void setIconTintOverlay(boolean isDark) {
         final boolean enable = Settings.System.getIntForUser(mContext.getContentResolver(),
                 Settings.System.SETTINGS_ICON_TINT, 0, UserHandle.USER_CURRENT) == 1;
         try {
-            mOverlayManager.setEnabled("com.potato.overlay.settingsicontint",
+            mOverlayManager.setEnabled("com.zen.overlay.settingsicontint_dark",
+                    isDark && !enable, mLockscreenUserManager.getCurrentUserId());
+            mOverlayManager.setEnabled("com.zen.overlay.settingsicontint",
                         enable, mLockscreenUserManager.getCurrentUserId());
         } catch (RemoteException e) {
             Log.w(TAG, "Failed to handle settings icon tint overlay", e);
@@ -4094,6 +4096,7 @@ public class StatusBar extends SystemUI implements DemoMode,
 
         updateCorners();
         updateQSPanel();
+        setIconTintOverlay(useDarkTheme);
     }
 
     private void updateCorners() {
@@ -5346,7 +5349,8 @@ public class StatusBar extends SystemUI implements DemoMode,
 
         @Override
         public void onChange(boolean selfChange, Uri uri) {
-            if (uri.equals(Settings.System.getUriFor(Settings.System.PREFER_BLACK_THEMES))) {
+            if (uri.equals(Settings.System.getUriFor(Settings.System.PREFER_BLACK_THEMES)) ||
+                    uri.equals(Settings.System.getUriFor(Settings.System.SETTINGS_ICON_TINT))) {
                 updateTheme();
             } else if (uri.equals(Settings.System.getUriFor(Settings.System.QS_ROWS_PORTRAIT)) ||
                     uri.equals(Settings.System.getUriFor(Settings.System.QS_ROWS_LANDSCAPE)) ||
@@ -5368,8 +5372,6 @@ public class StatusBar extends SystemUI implements DemoMode,
                    uri.equals(Settings.System.getUriFor(Settings.System.LOCKSCREEN_INFO)) ||
                    uri.equals(Settings.System.getUriFor(Settings.System.LOCKSCREEN_CLOCK_SELECTION))) {
                 updateKeyguardStatusSettings();
-            } else if (uri.equals(Settings.System.getUriFor(Settings.System.SETTINGS_ICON_TINT))) {
-                setIconTintOverlay();
             }
         }
 
@@ -5383,7 +5385,6 @@ public class StatusBar extends SystemUI implements DemoMode,
             updateQsPanelResources();
             updateCorners();
             updateKeyguardStatusSettings();
-            setIconTintOverlay();
         }
     }
 
