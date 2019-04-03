@@ -2244,6 +2244,17 @@ public class StatusBar extends SystemUI implements DemoMode,
         setThemeStateFromList(enable, getThemePkgs("android.theme.common"));
     }
 
+    private void setIconTintOverlay() {
+        final boolean enable = Settings.System.getIntForUser(mContext.getContentResolver(),
+                Settings.System.SETTINGS_ICON_TINT, 0, UserHandle.USER_CURRENT) == 1;
+        try {
+            mOverlayManager.setEnabled("com.potato.overlay.settingsicontint",
+                        enable, mLockscreenUserManager.getCurrentUserId());
+        } catch (RemoteException e) {
+            Log.w(TAG, "Failed to handle settings icon tint overlay", e);
+        }
+    }
+
     @Nullable
     public View getAmbientIndicationContainer() {
         return mAmbientIndicationContainer;
@@ -5311,6 +5322,9 @@ public class StatusBar extends SystemUI implements DemoMode,
                     Settings.System.QS_PANEL_BG_USE_ACCENT),
                     false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.SETTINGS_ICON_TINT),
+                    false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.QS_PANEL_BG_USE_FW),
                     false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
@@ -5354,6 +5368,8 @@ public class StatusBar extends SystemUI implements DemoMode,
                    uri.equals(Settings.System.getUriFor(Settings.System.LOCKSCREEN_INFO)) ||
                    uri.equals(Settings.System.getUriFor(Settings.System.LOCKSCREEN_CLOCK_SELECTION))) {
                 updateKeyguardStatusSettings();
+            } else if (uri.equals(Settings.System.getUriFor(Settings.System.SETTINGS_ICON_TINT))) {
+                setIconTintOverlay();
             }
         }
 
@@ -5367,6 +5383,7 @@ public class StatusBar extends SystemUI implements DemoMode,
             updateQsPanelResources();
             updateCorners();
             updateKeyguardStatusSettings();
+            setIconTintOverlay();
         }
     }
 

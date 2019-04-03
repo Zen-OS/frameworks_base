@@ -4238,6 +4238,16 @@ public final class Settings {
                 BOOLEAN_VALIDATOR;
 
         /**
+         * Whether to change the color of the qs panel based on wallpaper
+         * @hide
+         */
+        public static final String SETTINGS_ICON_TINT = "settings_icon_tint";
+
+        /** @hide */
+        private static final Validator SETTINGS_ICON_TINT_VALIDATOR =
+                BOOLEAN_VALIDATOR;
+
+        /**
          * Whether to show the battery info on the lockscreen while charging
          * @hide
          */
@@ -4449,6 +4459,7 @@ public final class Settings {
             QS_PANEL_BG_USE_WALL,
             QS_PANEL_BG_USE_FW,
             QS_PANEL_BG_USE_ACCENT,
+            SETTINGS_ICON_TINT,
         };
 
         /**
@@ -4571,6 +4582,7 @@ public final class Settings {
             PRIVATE_SETTINGS.add(QS_PANEL_BG_USE_WALL);
             PRIVATE_SETTINGS.add(QS_PANEL_BG_USE_FW);
             PRIVATE_SETTINGS.add(QS_PANEL_BG_USE_ACCENT);
+            PRIVATE_SETTINGS.add(SETTINGS_ICON_TINT);
         }
 
         /**
@@ -4668,6 +4680,7 @@ public final class Settings {
             VALIDATORS.put(QS_PANEL_BG_USE_WALL, QS_PANEL_BG_USE_WALL_VALIDATOR);
             VALIDATORS.put(QS_PANEL_BG_USE_FW, QS_PANEL_BG_USE_FW_VALIDATOR);
             VALIDATORS.put(QS_PANEL_BG_USE_ACCENT, QS_PANEL_BG_USE_ACCENT_VALIDATOR);
+            VALIDATORS.put(SETTINGS_ICON_TINT, SETTINGS_ICON_TINT_VALIDATOR);
         }
 
         /**
