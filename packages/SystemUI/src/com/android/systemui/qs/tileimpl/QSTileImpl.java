@@ -378,6 +378,9 @@ public abstract class QSTileImpl<TState extends State> implements QSTile {
     public abstract CharSequence getTileLabel();
 
     public static int getColorForState(Context context, int state) {
+
+        boolean enableQsTileTinting = context.getResources().getBoolean(R.bool.config_enable_qs_tile_tinting);
+
         int activeDefault = Utils.getColorAttr(context, android.R.attr.colorPrimary);
 
         boolean setQsFromWall = System.getIntForUser(context.getContentResolver(),
@@ -394,11 +397,23 @@ public abstract class QSTileImpl<TState extends State> implements QSTile {
 
         switch (state) {
             case Tile.STATE_UNAVAILABLE:
-                return Utils.getDisabled(context,
+                if (!enableQsTileTinting) {
+                    return Utils.getDisabled(context,
                         Utils.getColorAttr(context, android.R.attr.textColorSecondary));
+                } else {
+                    return Utils.getDisabled(context,
+                        context.getColor(R.color.qs_tiles_unavailable_tint));
+                }
             case Tile.STATE_INACTIVE:
-                return Utils.getColorAttr(context, android.R.attr.textColorSecondary);
+                if (!enableQsTileTinting) {
+                    return Utils.getColorAttr(context, android.R.attr.textColorSecondary);
+                } else {
+                    return context.getColor(R.color.qs_tiles_inactive_tint);
+                }
             case Tile.STATE_ACTIVE:
+                if (!enableQsTileTinting) {
+                    return context.getColor(R.color.qs_tiles_active_tint);
+                } else {
                 if (setQsFromResources) {
                     return Utils.getColorAttr(context, android.R.attr.colorPrimary);
                 } else {
@@ -409,6 +424,7 @@ public abstract class QSTileImpl<TState extends State> implements QSTile {
                             return qsBackGroundColorWall;
                         else
                             return qsBackGroundColor;
+                        }
                     }
                 }
             default:
