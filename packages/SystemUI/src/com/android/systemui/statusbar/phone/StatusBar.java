@@ -2132,6 +2132,7 @@ public class StatusBar extends SystemUI implements DemoMode,
     @Override
     public void onColorsChanged(ColorExtractor extractor, int which) {
         updateTheme();
+        setIconTintOverlay(shouldUseDarkTheme());
     }
 
     private boolean isUsingDarkTheme() {
@@ -2263,14 +2264,16 @@ public class StatusBar extends SystemUI implements DemoMode,
     private void setIconTintOverlay(boolean isDark) {
         final boolean enable = Settings.System.getIntForUser(mContext.getContentResolver(),
                 Settings.System.SETTINGS_ICON_TINT, 0, UserHandle.USER_CURRENT) == 1;
-        try {
-            mOverlayManager.setEnabled("com.zen.overlay.settingsicontint_dark",
-                    isDark && !enable, mLockscreenUserManager.getCurrentUserId());
-            mOverlayManager.setEnabled("com.zen.overlay.settingsicontint",
+        mUiOffloadThread.submit(() -> {
+            try {
+                mOverlayManager.setEnabled("com.zen.overlay.settingsicontint_dark",
+                        isDark && !enable, mLockscreenUserManager.getCurrentUserId());
+                mOverlayManager.setEnabled("com.zen.overlay.settingsicontint",
                         enable, mLockscreenUserManager.getCurrentUserId());
-        } catch (RemoteException e) {
-            Log.w(TAG, "Failed to handle settings icon tint overlay", e);
-        }
+            } catch (RemoteException e) {
+                Log.w(TAG, "Failed to handle settings icon tint overlay", e);
+            }
+        });
     }
 
     @Nullable
@@ -4077,16 +4080,7 @@ public class StatusBar extends SystemUI implements DemoMode,
     protected void updateTheme() {
         final boolean inflated = mStackScroller != null && mStatusBarWindowManager != null;
 
-        // The system wallpaper defines if system should be light or dark.
-        WallpaperColors systemColors = mColorExtractor
-                .getWallpaperColors(WallpaperManager.FLAG_SYSTEM);
-        final boolean wallpaperWantsDarkTheme = systemColors != null
-                && (systemColors.getColorHints() & WallpaperColors.HINT_SUPPORTS_DARK_THEME) != 0;
-        final Configuration config = mContext.getResources().getConfiguration();
-        final boolean nightModeWantsDarkTheme = DARK_THEME_IN_NIGHT_MODE
-                && (config.uiMode & Configuration.UI_MODE_NIGHT_MASK)
-                    == Configuration.UI_MODE_NIGHT_YES;
-        boolean useDarkTheme = wallpaperWantsDarkTheme || nightModeWantsDarkTheme;
+        boolean useDarkTheme = shouldUseDarkTheme();
         boolean useBlackTheme = (Settings.System.getIntForUser(mContext.getContentResolver(),
                 Settings.System.PREFER_BLACK_THEMES, 0, UserHandle.USER_CURRENT) == 1);
 
@@ -4121,7 +4115,19 @@ public class StatusBar extends SystemUI implements DemoMode,
 
         updateCorners();
         updateQSPanel();
-        setIconTintOverlay(useDarkTheme);
+    }
+
+    private boolean shouldUseDarkTheme() {
+        // The system wallpaper defines if system should be light or dark.
+        WallpaperColors systemColors = mColorExtractor
+                .getWallpaperColors(WallpaperManager.FLAG_SYSTEM);
+        final boolean wallpaperWantsDarkTheme = systemColors != null
+                && (systemColors.getColorHints() & WallpaperColors.HINT_SUPPORTS_DARK_THEME) != 0;
+        final Configuration config = mContext.getResources().getConfiguration();
+        final boolean nightModeWantsDarkTheme = DARK_THEME_IN_NIGHT_MODE
+                && (config.uiMode & Configuration.UI_MODE_NIGHT_MASK)
+                == Configuration.UI_MODE_NIGHT_YES;
+        return wallpaperWantsDarkTheme || nightModeWantsDarkTheme;
     }
 
     private void updateCorners() {
@@ -5382,8 +5388,7 @@ public class StatusBar extends SystemUI implements DemoMode,
 
         @Override
         public void onChange(boolean selfChange, Uri uri) {
-            if (uri.equals(Settings.System.getUriFor(Settings.System.PREFER_BLACK_THEMES)) ||
-                    uri.equals(Settings.System.getUriFor(Settings.System.SETTINGS_ICON_TINT))) {
+            if (uri.equals(Settings.System.getUriFor(Settings.System.PREFER_BLACK_THEMES))) {
                 updateTheme();
             } else if (uri.equals(Settings.System.getUriFor(Settings.System.QS_ROWS_PORTRAIT)) ||
                     uri.equals(Settings.System.getUriFor(Settings.System.QS_ROWS_LANDSCAPE)) ||
@@ -5409,6 +5414,8 @@ public class StatusBar extends SystemUI implements DemoMode,
                 Settings.System.QS_TILE_STYLE))) {
                 stockTileStyle();
                 updateTileStyle();
+            } else if (uri.equals(Settings.System.getUriFor(Settings.System.SETTINGS_ICON_TINT))) {
+                setIconTintOverlay(shouldUseDarkTheme());
             }
         }
 
