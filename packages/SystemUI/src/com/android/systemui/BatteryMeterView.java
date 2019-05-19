@@ -74,6 +74,7 @@ public class BatteryMeterView extends LinearLayout implements
     private int mLevel;
     private boolean mForceShowPercent;
     private boolean mCharging;
+    private boolean mPowerSave;
 
     private int mDarkModeBackgroundColor;
     private int mDarkModeFillColor;
@@ -232,6 +233,14 @@ public class BatteryMeterView extends LinearLayout implements
 
     @Override
     public void onBatteryLevelChanged(int level, boolean pluggedIn, boolean charging) {
+
+        // text battery will always show percentage
+        if (isCircleBattery()
+                || getMeterStyle() == BatteryMeterDrawableBase.BATTERY_STYLE_PORTRAIT) {
+            setForceShowPercent(pluggedIn);
+            // mDrawable.setCharging(pluggedIn) will invalidate the view
+        }
+
         mDrawable.setBatteryLevel(level);
         mDrawable.setCharging(pluggedIn);
         mLevel = level;
@@ -248,6 +257,10 @@ public class BatteryMeterView extends LinearLayout implements
     @Override
     public void onPowerSaveChanged(boolean isPowerSave) {
         mDrawable.setPowerSave(isPowerSave);
+        if (mPowerSave != isPowerSave) {
+            mPowerSave = isPowerSave;
+            updateShowPercent();
+        }
     }
 
     private TextView loadPercentView() {
@@ -261,7 +274,7 @@ public class BatteryMeterView extends LinearLayout implements
             // to load its emoji colored variant with the uFE0E flag
             String bolt = "\u26A1\uFE0E";
             CharSequence mChargeIndicator =
-                    mCharging && mDrawable.getMeterStyle() == BatteryMeterDrawableBase.BATTERY_STYLE_TEXT
+                    mCharging && getMeterStyle() == BatteryMeterDrawableBase.BATTERY_STYLE_TEXT
                     ? (bolt + " ") : "";
             mBatteryPercentView.setText(mChargeIndicator +
                     NumberFormat.getPercentInstance().format(mLevel / 100f));
@@ -273,7 +286,9 @@ public class BatteryMeterView extends LinearLayout implements
         final boolean showing = mBatteryPercentView != null;
         int style = Settings.System.getIntForUser(getContext().getContentResolver(),
                 SHOW_BATTERY_PERCENT, 0, mUser);
-        if (mForceShowPercent) {
+        if (mForceShowPercent
+                || (getMeterStyle() != BatteryMeterDrawableBase.BATTERY_STYLE_HIDDEN
+                && (mForceShowPercent || mPowerSave || mCharging))) {
             style = 1; // Default view
         }
         switch (style) {
@@ -310,7 +325,7 @@ public class BatteryMeterView extends LinearLayout implements
             final Resources res = getContext().getResources();
             final int startPadding = res.getDimensionPixelSize(R.dimen.battery_level_padding_start);
             mBatteryPercentView.setPaddingRelative(
-                    mDrawable.getMeterStyle() == BatteryMeterDrawableBase.BATTERY_STYLE_TEXT ? 0 : startPadding,
+                    getMeterStyle() == BatteryMeterDrawableBase.BATTERY_STYLE_TEXT ? 0 : startPadding,
                     0, 0, 0);
         }
     }
@@ -399,6 +414,7 @@ public class BatteryMeterView extends LinearLayout implements
     private void updateBatteryStyle(String styleStr) {
         final int style = styleStr == null ?
                 BatteryMeterDrawableBase.BATTERY_STYLE_PORTRAIT : Integer.parseInt(styleStr);
+        mDrawable.setMeterStyle(style);
 
         mForceShowPercent = false;
 
@@ -421,7 +437,6 @@ public class BatteryMeterView extends LinearLayout implements
                     removeView(mBatteryPercentView);
                     mBatteryPercentView = null;
                 }
-                mDrawable.setMeterStyle(style);
                 if (mBatteryIconView == null) {
                     mBatteryIconView = new ImageView(mContext);
                     mBatteryIconView.setImageDrawable(mDrawable);
@@ -436,5 +451,14 @@ public class BatteryMeterView extends LinearLayout implements
         updateShowPercent();
         scaleBatteryMeterViews();
         updatePercentText();
+    }
+
+    private boolean isCircleBattery() {
+        return getMeterStyle() == BatteryMeterDrawableBase.BATTERY_STYLE_CIRCLE
+                || getMeterStyle() == BatteryMeterDrawableBase.BATTERY_STYLE_DOTTED_CIRCLE;
+    }
+
+    private int getMeterStyle() {
+        return mDrawable.getMeterStyle();
     }
 }
