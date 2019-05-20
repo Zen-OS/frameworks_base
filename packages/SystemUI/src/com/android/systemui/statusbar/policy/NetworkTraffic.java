@@ -57,7 +57,7 @@ public class NetworkTraffic extends TextView {
     private boolean mHideArrow;
     private int mAutoHideThreshold;
     private int mTintColor;
-    private boolean mTrafficInHeaderView;
+
     private boolean mScreenOn = true;
 
     private Handler mTrafficHandler = new Handler() {
@@ -99,8 +99,7 @@ public class NetworkTraffic extends TextView {
                     setTextSize(TypedValue.COMPLEX_UNIT_PX, (float)txtSize);
                     setText(output);
                 }
-                setVisibility(
-                mTrafficInHeaderView ? View.GONE : View.VISIBLE);
+                setVisibility(View.VISIBLE);
             }
 
             // Post delayed message to refresh in ~1000ms
@@ -154,10 +153,7 @@ public class NetworkTraffic extends TextView {
             resolver.registerContentObserver(Settings.System
                     .getUriFor(Settings.System.NETWORK_TRAFFIC_HIDEARROW), false,
                     this, UserHandle.USER_ALL);
-            resolver.registerContentObserver(Settings.System
-                    .getUriFor(Settings.System.NETWORK_TRAFFIC_VIEW_LOCATION), false,
-                    this, UserHandle.USER_ALL); 
-       }
+        }
 
         /*
          *  @hide
@@ -248,10 +244,6 @@ public class NetworkTraffic extends TextView {
     }
 
     private void updateSettings() {
-        final ContentResolver resolver = getContext().getContentResolver();
-
-        mTrafficInHeaderView = Settings.System.getIntForUser(resolver,
-                Settings.System.NETWORK_TRAFFIC_VIEW_LOCATION, 1, UserHandle.USER_CURRENT) == 0;
         if (mIsEnabled) {
             if (mAttached) {
                 totalRxBytes = TrafficStats.getTotalRxBytes();
