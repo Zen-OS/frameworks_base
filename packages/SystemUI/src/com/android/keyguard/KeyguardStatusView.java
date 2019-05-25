@@ -458,7 +458,6 @@ public class KeyguardStatusView extends GridLayout implements
                 mCustomClockView.setVisibility(View.GONE);
 				mSpideyClockView.setVisibility(View.GONE);
 				mAvengersClockView.setVisibility(View.GONE);
-                mKeyguardSlice.setPadding(0,0,0,0);
                 break;
             case 1: // digital (bold)
                 mClockView.setVisibility(mDarkAmount != 1 ? (mShowClock ? View.VISIBLE :
@@ -466,7 +465,6 @@ public class KeyguardStatusView extends GridLayout implements
                 mCustomClockView.setVisibility(View.GONE);
 				mSpideyClockView.setVisibility(View.GONE);
 				mAvengersClockView.setVisibility(View.GONE);
-                mKeyguardSlice.setPadding(0,0,0,0);
                 break;
             case 2: // custom analog
                 mCustomClockView.setVisibility(mDarkAmount != 1 ? (mShowClock ? View.VISIBLE :
@@ -474,10 +472,6 @@ public class KeyguardStatusView extends GridLayout implements
                 mClockView.setVisibility(View.GONE);
 				mSpideyClockView.setVisibility(View.GONE);
 				mAvengersClockView.setVisibility(View.GONE);
-                mKeyguardSlice.setPadding(0,(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX,
-                    getResources().getDimensionPixelSize(R.dimen.custom_analog_clock_bottom_padding), 
-                    getResources().getDisplayMetrics()),0,0
-                );
                 break;
             case 3: // sammy
                 mClockView.setVisibility(mDarkAmount != 1 ? (mShowClock ? View.VISIBLE :
@@ -485,7 +479,6 @@ public class KeyguardStatusView extends GridLayout implements
                 mCustomClockView.setVisibility(View.GONE);
 				mSpideyClockView.setVisibility(View.GONE);
 				mAvengersClockView.setVisibility(View.GONE);
-                mKeyguardSlice.setPadding(0,0,0,0);
                 break;
             case 4: // sammy (bold)
                 mClockView.setVisibility(mDarkAmount != 1 ? (mShowClock ? View.VISIBLE :
@@ -493,7 +486,6 @@ public class KeyguardStatusView extends GridLayout implements
                 mCustomClockView.setVisibility(View.GONE);
 				mSpideyClockView.setVisibility(View.GONE);
 				mAvengersClockView.setVisibility(View.GONE);
-                mKeyguardSlice.setPadding(0,0,0,0);
                 break;
             case 5: // spidey analog
                 mSpideyClockView.setVisibility(mDarkAmount != 1 ? (mShowClock ? View.VISIBLE :
@@ -501,10 +493,6 @@ public class KeyguardStatusView extends GridLayout implements
                 mClockView.setVisibility(View.GONE);
                 mCustomClockView.setVisibility(View.GONE);
 				mAvengersClockView.setVisibility(View.GONE);
-                mKeyguardSlice.setPadding(0,(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX,
-                    getResources().getDimensionPixelSize(R.dimen.custom_analog_clock_bottom_padding), 
-                    getResources().getDisplayMetrics()),0,0
-                );
                 break;
             case 6: // avengers analog
                 mAvengersClockView.setVisibility(mDarkAmount != 1 ? (mShowClock ? View.VISIBLE :
@@ -512,10 +500,6 @@ public class KeyguardStatusView extends GridLayout implements
                 mClockView.setVisibility(View.GONE);
                 mCustomClockView.setVisibility(View.GONE);
 				mSpideyClockView.setVisibility(View.GONE);
-                mKeyguardSlice.setPadding(0,(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX,
-                    getResources().getDimensionPixelSize(R.dimen.custom_analog_clock_bottom_padding), 
-                    getResources().getDisplayMetrics()),0,0
-                );
                 break;
         }
     }
