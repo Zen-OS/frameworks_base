@@ -670,6 +670,9 @@ public class KeyguardStatusView extends GridLayout implements
             case 10: // avengers analog
                 params.addRule(RelativeLayout.BELOW, R.id.avengers_clock_view);
                 break;
+            case 11: // custom text clock
+                params.addRule(RelativeLayout.BELOW, R.id.custom_textclock_view);
+                break;
         }
 
         updateVisibilities();
