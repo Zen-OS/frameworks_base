@@ -4384,18 +4384,27 @@ public final class Settings {
          * @hide
          */
         public static final String LOCKSCREEN_CLOCK = "lockscreen_clock";
+        /** @hide */
+        private static final Validator LOCKSCREEN_CLOCK_VALIDATOR =
+                BOOLEAN_VALIDATOR;
 
         /**
          * Select which lockscreen clock style to display
          * @hide
          */
         public static final String LOCKSCREEN_CLOCK_SELECTION = "lockscreen_clock_selection";
+        /** @hide */
+        public static final Validator LOCKSCREEN_CLOCK_SELECTION_VALIDATOR =
+                new SettingsValidators.InclusiveIntegerRangeValidator(0, 10);
 
         /**
          * Whether to hide the items underneath the lockscreen clock
          * @hide
          */
         public static final String LOCKSCREEN_INFO = "lockscreen_info";
+        /** @hide */
+        private static final Validator LOCKSCREEN_INFO_VALIDATOR =
+                BOOLEAN_VALIDATOR;
 
         /**
          * 0 - Default
@@ -4494,6 +4503,9 @@ public final class Settings {
             QS_PANEL_BG_USE_FW,
             QS_PANEL_BG_USE_ACCENT,
             SETTINGS_ICON_TINT,
+            LOCKSCREEN_CLOCK,
+            LOCKSCREEN_CLOCK_SELECTION,
+            LOCKSCREEN_INFO
         };
 
         /**
@@ -4560,6 +4572,9 @@ public final class Settings {
             PUBLIC_SETTINGS.add(HAPTIC_FEEDBACK_ENABLED);
             PUBLIC_SETTINGS.add(SHOW_WEB_SUGGESTIONS);
             PUBLIC_SETTINGS.add(VIBRATE_WHEN_RINGING);
+            PUBLIC_SETTINGS.add(LOCKSCREEN_CLOCK);
+            PUBLIC_SETTINGS.add(LOCKSCREEN_CLOCK_SELECTION);
+            PUBLIC_SETTINGS.add(LOCKSCREEN_INFO);
         }
 
         /**
@@ -4714,6 +4729,9 @@ public final class Settings {
             VALIDATORS.put(QS_PANEL_BG_USE_FW, QS_PANEL_BG_USE_FW_VALIDATOR);
             VALIDATORS.put(QS_PANEL_BG_USE_ACCENT, QS_PANEL_BG_USE_ACCENT_VALIDATOR);
             VALIDATORS.put(SETTINGS_ICON_TINT, SETTINGS_ICON_TINT_VALIDATOR);
+            VALIDATORS.put(LOCKSCREEN_CLOCK, LOCKSCREEN_CLOCK_VALIDATOR);
+            VALIDATORS.put(LOCKSCREEN_CLOCK_SELECTION, LOCKSCREEN_CLOCK_SELECTION_VALIDATOR);
+            VALIDATORS.put(LOCKSCREEN_INFO, LOCKSCREEN_INFO_VALIDATOR);
         }
 
         /**
