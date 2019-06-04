@@ -2228,6 +2228,7 @@ public class StatusBar extends SystemUI implements DemoMode,
                 setDarkThemeState(finalUseDarkTheme);
                 setBlackThemeState(finalUseBlackTheme);
                 setCommonThemeState(finalUseDarkTheme || finalUseBlackTheme);
+                mNotificationPanel.setLockscreenClockTheme(finalUseDarkTheme);
             });
         }
     }
