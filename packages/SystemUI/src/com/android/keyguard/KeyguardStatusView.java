@@ -193,16 +193,12 @@ public class KeyguardStatusView extends GridLayout implements
         mClockView.setShowCurrentUserTime(true);
         mCustomClockView = findViewById(R.id.custom_clock_view);
         mSpideyClockView = findViewById(R.id.spidey_clock_view);
+        mAvengersClockView = findViewById(R.id.avengers_clock_view);
         mTextClock = findViewById(R.id.custom_textclock_view);
         mOwnerInfo = findViewById(R.id.owner_info);
         mKeyguardSlice = findViewById(R.id.keyguard_status_area);
         mClockSeparator = findViewById(R.id.clock_separator);
-        mVisibleInDoze = Sets.newArraySet(mClockView, mKeyguardSlice, mCustomClockView, mSpideyClockView);
-        mAvengersClockView = findViewById(R.id.avengers_clock_view);
-        mOwnerInfo = findViewById(R.id.owner_info);
-        mKeyguardSlice = findViewById(R.id.keyguard_status_area);
-        mClockSeparator = findViewById(R.id.clock_separator);
-        mVisibleInDoze = Sets.newArraySet(mClockView, mKeyguardSlice, mCustomClockView, mSpideyClockView, mAvengersClockView);
+        mVisibleInDoze = Sets.newArraySet(mClockView, mKeyguardSlice, mCustomClockView, mSpideyClockView, mAvengersClockView, mTextClock);
         mTextColor = mClockView.getCurrentTextColor();
 
         int clockStroke = getResources().getDimensionPixelSize(R.dimen.widget_small_font_stroke);
@@ -583,6 +579,7 @@ public class KeyguardStatusView extends GridLayout implements
                     mKeyguardSlice.getLayoutParams();
             params.addRule(RelativeLayout.BELOW, R.id.clock_view);
             mClockView.setSingleLine(true);
+            mClockView.setBackgroundResource(0);
             mClockView.setGravity(Gravity.CENTER);
             mClockView.setVisibility(mDarkAmount != 1 ? (mShowClock ? View.VISIBLE :
                     View.GONE) : View.VISIBLE);
