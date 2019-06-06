@@ -4437,6 +4437,16 @@ public final class Settings {
         public static final String ANBI_ENABLED_OPTION = "anbi_enabled_option";
 
         /**
+         * @hide
+         */
+        public static final String USE_BOTTOM_GESTURE_NAVIGATION =
+                "use_bottom_gesture_navigation";
+
+        /** @hide */
+        private static final Validator USE_BOTTOM_GESTURE_NAVIGATION_VALIDATOR =
+                BOOLEAN_VALIDATOR;
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
@@ -4505,7 +4515,8 @@ public final class Settings {
             SETTINGS_ICON_TINT,
             LOCKSCREEN_CLOCK,
             LOCKSCREEN_CLOCK_SELECTION,
-            LOCKSCREEN_INFO
+            LOCKSCREEN_INFO,
+            USE_BOTTOM_GESTURE_NAVIGATION,
         };
 
         /**
@@ -4632,6 +4643,7 @@ public final class Settings {
             PRIVATE_SETTINGS.add(QS_PANEL_BG_USE_ACCENT);
             PRIVATE_SETTINGS.add(SETTINGS_ICON_TINT);
             PRIVATE_SETTINGS.add(QS_TILE_STYLE);
+            PRIVATE_SETTINGS.add(USE_BOTTOM_GESTURE_NAVIGATION);
         }
 
         /**
@@ -4732,6 +4744,7 @@ public final class Settings {
             VALIDATORS.put(LOCKSCREEN_CLOCK, LOCKSCREEN_CLOCK_VALIDATOR);
             VALIDATORS.put(LOCKSCREEN_CLOCK_SELECTION, LOCKSCREEN_CLOCK_SELECTION_VALIDATOR);
             VALIDATORS.put(LOCKSCREEN_INFO, LOCKSCREEN_INFO_VALIDATOR);
+            VALIDATORS.put(USE_BOTTOM_GESTURE_NAVIGATION, USE_BOTTOM_GESTURE_NAVIGATION_VALIDATOR);
         }
 
         /**
