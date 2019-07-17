@@ -89,6 +89,7 @@ import android.media.MediaMetadata;
 import android.metrics.LogMaker;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Process;
@@ -848,7 +849,7 @@ public class StatusBar extends SystemUI implements DemoMode,
         final Context context = mContext;
         updateDisplaySize(); // populates mDisplayMetrics
         updateResources();
-        updateTheme();
+        updateTheme(themeNeedsRefresh());
 
         inflateStatusBarWindow(context);
         mStatusBarWindow.setService(this);
@@ -2206,7 +2207,7 @@ public class StatusBar extends SystemUI implements DemoMode,
 
     @Override
     public void onColorsChanged(ColorExtractor extractor, int which) {
-        updateTheme();
+        updateTheme(false);
         setIconTintOverlay(shouldUseDarkTheme());
     }
 
@@ -2261,7 +2262,7 @@ public class StatusBar extends SystemUI implements DemoMode,
         return (cornerRadiusRes == cornerRadius) && (contentPaddingRes == contentPadding);
     }
 
-    private void handleThemeStates(boolean useBlackTheme, boolean useDarkTheme) {
+    private void handleThemeStates(boolean useBlackTheme, boolean useDarkTheme, boolean themeNeedsRefresh) {
         useBlackTheme = useDarkTheme && useBlackTheme;
         if (useBlackTheme)
             useDarkTheme = false;
@@ -2269,7 +2270,7 @@ public class StatusBar extends SystemUI implements DemoMode,
         // We can only use final variables in lambdas
         final boolean finalUseBlackTheme = useBlackTheme;
         final boolean finalUseDarkTheme = useDarkTheme;
-        if ((isUsingBlackTheme() != finalUseBlackTheme) ||
+        if (themeNeedsRefresh || (isUsingBlackTheme() != finalUseBlackTheme) ||
                 (isUsingDarkTheme() != finalUseDarkTheme)) {
             mUiOffloadThread.submit(() -> {
                 setDarkThemeState(finalUseDarkTheme);
@@ -3410,7 +3411,7 @@ public class StatusBar extends SystemUI implements DemoMode,
     public void onConfigChanged(Configuration newConfig) {
         updateResources();
         updateDisplaySize(); // populates mDisplayMetrics
-        updateTheme();
+        updateTheme(false);
 
         if (DEBUG) {
             Log.v(TAG, "configuration changed: " + mContext.getResources().getConfiguration());
@@ -4150,7 +4151,7 @@ public class StatusBar extends SystemUI implements DemoMode,
             }
         }
         mNotificationPanel.setBarState(mState, mKeyguardFadingAway, goingToFullShade);
-        updateTheme();
+        updateTheme(false);
         updateDozingState();
         updatePublicMode();
         updateStackScrollerState(goingToFullShade, fromShadeLocked);
@@ -4162,6 +4163,16 @@ public class StatusBar extends SystemUI implements DemoMode,
                 mUnlockMethodCache.isMethodSecure(),
                 mStatusBarKeyguardViewManager.isOccluded());
         Trace.endSection();
+    }
+
+    private boolean themeNeedsRefresh(){
+        if (mContext.getSharedPreferences("systemui_theming", 0).getString(
+                "build_fingerprint", "").equals(Build.ZEN_FINGERPRINT)){
+            return false;
+        }
+        mContext.getSharedPreferences("systemui_theming", 0).edit().putString(
+                "build_fingerprint", Build.ZEN_FINGERPRINT).commit();
+        return true;
     }
 
     /**
@@ -4176,14 +4187,14 @@ public class StatusBar extends SystemUI implements DemoMode,
     /**
      * Switches theme from light to dark and vice-versa.
      */
-    protected void updateTheme() {
+    protected void updateTheme(boolean themeNeedsRefresh) {
         final boolean inflated = mStackScroller != null && mStatusBarWindowManager != null;
 
         boolean useDarkTheme = shouldUseDarkTheme();
         boolean useBlackTheme = (Settings.System.getIntForUser(mContext.getContentResolver(),
                 Settings.System.PREFER_BLACK_THEMES, 0, UserHandle.USER_CURRENT) == 1);
 
-        handleThemeStates(useBlackTheme, useDarkTheme);
+        handleThemeStates(useBlackTheme, useDarkTheme, themeNeedsRefresh);
 
         // Lock wallpaper defines the color of the majority of the views, hence we'll use it
         // to set our default theme.
@@ -4441,7 +4452,7 @@ public class StatusBar extends SystemUI implements DemoMode,
         mStackScroller.setStatusBarState(state);
         updateReportRejectedTouchVisibility();
         updateDozing();
-        updateTheme();
+        updateTheme(false);
         touchAutoDim();
         mNotificationShelf.setStatusBarState(state);
     }
@@ -5514,7 +5525,7 @@ public class StatusBar extends SystemUI implements DemoMode,
         @Override
         public void onChange(boolean selfChange, Uri uri) {
             if (uri.equals(Settings.System.getUriFor(Settings.System.PREFER_BLACK_THEMES))) {
-                updateTheme();
+                updateTheme(false);
             } else if (uri.equals(Settings.System.getUriFor(Settings.System.QS_ROWS_PORTRAIT)) ||
                     uri.equals(Settings.System.getUriFor(Settings.System.QS_ROWS_LANDSCAPE)) ||
                     uri.equals(Settings.System.getUriFor(Settings.System.QS_COLUMNS_PORTRAIT)) ||
@@ -5552,7 +5563,7 @@ public class StatusBar extends SystemUI implements DemoMode,
         }
 
         public void update() {
-            updateTheme();
+            updateTheme(false);
             updateQsPanelResources();
             updateCorners();
             updateKeyguardStatusSettings();
