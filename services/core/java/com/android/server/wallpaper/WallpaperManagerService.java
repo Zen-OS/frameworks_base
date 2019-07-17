@@ -400,12 +400,13 @@ public class WallpaperManagerService extends IWallpaperManager.Stub
                 }
                 break;
             case Settings.Secure.THEME_MODE_DARK:
+            case Settings.Secure.THEME_MODE_BLACK:
                 if (mThemeMode == Settings.Secure.THEME_MODE_WALLPAPER) {
                     result = !supportDarkTheme;
                 }
                 break;
             default:
-                Slog.w(TAG, "unkonwn theme mode " + themeMode);
+                Slog.w(TAG, "unknown theme mode " + themeMode);
                 return false;
         }
         mThemeMode = themeMode;
@@ -619,7 +620,7 @@ public class WallpaperManagerService extends IWallpaperManager.Stub
         boolean supportDarkTheme = (colorHints & WallpaperColors.HINT_SUPPORTS_DARK_THEME) != 0;
         if (mThemeMode == Settings.Secure.THEME_MODE_WALLPAPER ||
                 (mThemeMode == Settings.Secure.THEME_MODE_LIGHT && !supportDarkTheme) ||
-                (mThemeMode == Settings.Secure.THEME_MODE_DARK && supportDarkTheme)) {
+                ((mThemeMode == Settings.Secure.THEME_MODE_DARK && supportDarkTheme) || (mThemeMode == Settings.Secure.THEME_MODE_BLACK && supportDarkTheme))) {
             return colors;
         }
 
@@ -628,7 +629,7 @@ public class WallpaperManagerService extends IWallpaperManager.Stub
 
         if (mThemeMode == Settings.Secure.THEME_MODE_LIGHT) {
             colorHints &= ~WallpaperColors.HINT_SUPPORTS_DARK_THEME;
-        } else if (mThemeMode == Settings.Secure.THEME_MODE_DARK) {
+        } else if (mThemeMode == Settings.Secure.THEME_MODE_DARK || mThemeMode == Settings.Secure.THEME_MODE_BLACK) {
             colorHints |= WallpaperColors.HINT_SUPPORTS_DARK_THEME;
         }
         themeColors.setColorHints(colorHints);
