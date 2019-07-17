@@ -2262,7 +2262,18 @@ public class StatusBar extends SystemUI implements DemoMode,
         return (cornerRadiusRes == cornerRadius) && (contentPaddingRes == contentPadding);
     }
 
-    private void handleThemeStates(boolean useBlackTheme, boolean useDarkTheme, boolean themeNeedsRefresh) {
+    private void handleThemeStates(boolean themeNeedsRefresh) {
+        boolean useLightTheme = Settings.Secure.getIntForUser(mContext.getContentResolver(),
+                Settings.Secure.THEME_MODE, 0, UserHandle.USER_CURRENT) == 1;
+        boolean useDarkTheme = Settings.Secure.getIntForUser(mContext.getContentResolver(),
+                Settings.Secure.THEME_MODE, 0, UserHandle.USER_CURRENT) == 2;
+        boolean useBlackTheme = Settings.Secure.getIntForUser(mContext.getContentResolver(),
+                Settings.Secure.THEME_MODE, 0, UserHandle.USER_CURRENT) == 3;
+
+        if (!useBlackTheme && !useDarkTheme && !useLightTheme) {
+            // The system wallpaper defines if system should be light or dark.
+            useDarkTheme = shouldUseDarkTheme();
+        }
         // We can only use final variables in lambdas
         final boolean finalUseBlackTheme = useBlackTheme;
         final boolean finalUseDarkTheme = useDarkTheme;
@@ -4186,12 +4197,7 @@ public class StatusBar extends SystemUI implements DemoMode,
     protected void updateTheme(boolean themeNeedsRefresh) {
         final boolean inflated = mStackScroller != null && mStatusBarWindowManager != null;
 
-        boolean useDarkTheme = shouldUseDarkTheme() || (Settings.Secure.getIntForUser(mContext.getContentResolver(),
-                Settings.Secure.THEME_MODE, 0, UserHandle.USER_CURRENT) == 2);;
-        boolean useBlackTheme = (Settings.Secure.getIntForUser(mContext.getContentResolver(),
-                Settings.Secure.THEME_MODE, 0, UserHandle.USER_CURRENT) == 3);
-
-        handleThemeStates(useBlackTheme, useDarkTheme, themeNeedsRefresh);
+        handleThemeStates(themeNeedsRefresh);
 
         // Lock wallpaper defines the color of the majority of the views, hence we'll use it
         // to set our default theme.
