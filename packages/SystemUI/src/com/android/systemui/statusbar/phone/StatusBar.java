@@ -4190,9 +4190,10 @@ public class StatusBar extends SystemUI implements DemoMode,
     protected void updateTheme(boolean themeNeedsRefresh) {
         final boolean inflated = mStackScroller != null && mStatusBarWindowManager != null;
 
-        boolean useDarkTheme = shouldUseDarkTheme();
-        boolean useBlackTheme = (Settings.System.getIntForUser(mContext.getContentResolver(),
-                Settings.System.PREFER_BLACK_THEMES, 0, UserHandle.USER_CURRENT) == 1);
+        boolean useDarkTheme = shouldUseDarkTheme() || (Settings.Secure.getIntForUser(mContext.getContentResolver(),
+                Settings.Secure.THEME_MODE, 0, UserHandle.USER_CURRENT) == 2);;
+        boolean useBlackTheme = (Settings.Secure.getIntForUser(mContext.getContentResolver(),
+                Settings.Secure.THEME_MODE, 0, UserHandle.USER_CURRENT) == 3);
 
         handleThemeStates(useBlackTheme, useDarkTheme, themeNeedsRefresh);
 
@@ -5463,8 +5464,8 @@ public class StatusBar extends SystemUI implements DemoMode,
 
         void observe() {
             ContentResolver resolver = mContext.getContentResolver();
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.PREFER_BLACK_THEMES), false, this);
+            resolver.registerContentObserver(Settings.Secure.getUriFor(
+                    Settings.Secure.THEME_MODE), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.QS_ROWS_PORTRAIT),
                     false, this, UserHandle.USER_ALL);
@@ -5524,9 +5525,7 @@ public class StatusBar extends SystemUI implements DemoMode,
 
         @Override
         public void onChange(boolean selfChange, Uri uri) {
-            if (uri.equals(Settings.System.getUriFor(Settings.System.PREFER_BLACK_THEMES))) {
-                updateTheme(false);
-            } else if (uri.equals(Settings.System.getUriFor(Settings.System.QS_ROWS_PORTRAIT)) ||
+            if (uri.equals(Settings.System.getUriFor(Settings.System.QS_ROWS_PORTRAIT)) ||
                     uri.equals(Settings.System.getUriFor(Settings.System.QS_ROWS_LANDSCAPE)) ||
                     uri.equals(Settings.System.getUriFor(Settings.System.QS_COLUMNS_PORTRAIT)) ||
                     uri.equals(Settings.System.getUriFor(Settings.System.QS_COLUMNS_LANDSCAPE)) ||
