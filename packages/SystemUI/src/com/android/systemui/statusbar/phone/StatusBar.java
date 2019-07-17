@@ -2263,14 +2263,13 @@ public class StatusBar extends SystemUI implements DemoMode,
     }
 
     private void handleThemeStates(boolean themeNeedsRefresh) {
-        boolean useLightTheme = Settings.Secure.getIntForUser(mContext.getContentResolver(),
-                Settings.Secure.THEME_MODE, 0, UserHandle.USER_CURRENT) == 1;
-        boolean useDarkTheme = Settings.Secure.getIntForUser(mContext.getContentResolver(),
-                Settings.Secure.THEME_MODE, 0, UserHandle.USER_CURRENT) == 2;
-        boolean useBlackTheme = Settings.Secure.getIntForUser(mContext.getContentResolver(),
-                Settings.Secure.THEME_MODE, 0, UserHandle.USER_CURRENT) == 3;
+        int themeMode = Settings.Secure.getIntForUser(mContext.getContentResolver(),
+                Settings.Secure.THEME_MODE, 0, UserHandle.USER_CURRENT);
+        boolean useLightTheme = themeMode == 1;
+        boolean useDarkTheme = themeMode == 2;
+        boolean useBlackTheme = themeMode == 3;
 
-        if (!useBlackTheme && !useDarkTheme && !useLightTheme) {
+        if (themeMode == 0) {
             // The system wallpaper defines if system should be light or dark.
             useDarkTheme = shouldUseDarkTheme();
         }
