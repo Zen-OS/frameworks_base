@@ -333,19 +333,20 @@ public class StatusBar extends SystemUI implements DemoMode,
     public static final int FADE_KEYGUARD_DURATION_PULSING = 96;
 
     private static final String[] QS_TILE_THEMES = {
-        "com.android.systemui.qstile.default", // 0
-        "com.android.systemui.qstile.circletrim", // 1
-        "com.android.systemui.qstile.dualtonecircletrim", // 2
-        "com.android.systemui.qstile.squircletrim", // 3
-        "com.android.systemui.qstile.circlegradient", // 4
-        "com.android.systemui.qstile.wavey", // 5
-        "com.android.systemui.qstile.circledualtone", // 6
-        "com.android.systemui.qstile.pokesign", // 7
-        "com.android.systemui.qstile.ninja", // 8
-        "com.android.systemui.qstile.dottedcircle", // 9
-        "com.android.systemui.qstile.attemptmountain", // 10
-        "com.android.systemui.qstile.inkdrop", // 11
-        "com.android.systemui.qstile.cookie", // 12
+        "default_qstile", // 0
+        "com.android.systemui.qstile.square", // 1
+        "com.android.systemui.qstile.roundedsquare", // 2
+        "com.android.systemui.qstile.squircle", // 3
+        "com.android.systemui.qstile.teardrop", // 4
+        "com.android.systemui.qstile.circlegradient", // 5
+        "com.android.systemui.qstile.wavey", // 6
+        "com.android.systemui.qstile.circledualtone", // 7
+        "com.android.systemui.qstile.pokesign", // 8
+        "com.android.systemui.qstile.ninja", // 9
+        "com.android.systemui.qstile.dottedcircle", // 10
+        "com.android.systemui.qstile.attemptmountain", // 11
+        "com.android.systemui.qstile.inkdrop", // 12
+        "com.android.systemui.qstile.cookie", // 13
     };
 
     /** If true, the system is in the half-boot-to-decryption-screen state.
@@ -4291,9 +4292,9 @@ public class StatusBar extends SystemUI implements DemoMode,
         }
     }
 
-     // Switches qs tile style back to stock.
-    public void stockTileStyle() {
-        stockNewTileStyle(mOverlayManager, mLockscreenUserManager.getCurrentUserId());
+    // Unload all the qs tile styles
+    public void unlockQsTileStyles() {
+        unlockQsTileStyles(mOverlayManager, mLockscreenUserManager.getCurrentUserId());
     }
 
     private void updateDozingState() {
@@ -5553,7 +5554,7 @@ public class StatusBar extends SystemUI implements DemoMode,
                 updateKeyguardStatusSettings();
             } else if (uri.equals(Settings.System.getUriFor(
                 Settings.System.QS_TILE_STYLE))) {
-                stockTileStyle();
+                unlockQsTileStyles();
                 updateTileStyle();
             } else if (uri.equals(Settings.System.getUriFor(Settings.System.SETTINGS_ICON_TINT))) {
                 setIconTintOverlay(shouldUseDarkTheme());
@@ -5610,7 +5611,7 @@ public class StatusBar extends SystemUI implements DemoMode,
     // Switches qs tile style to user selected.
     public static void updateNewTileStyle(IOverlayManager om, int userId, int qsTileStyle) {
         if (qsTileStyle == 0) {
-            stockNewTileStyle(om, userId);
+            unlockQsTileStyles(om, userId);
         } else {
             try {
                 om.setEnabled(QS_TILE_THEMES[qsTileStyle],
@@ -5621,8 +5622,8 @@ public class StatusBar extends SystemUI implements DemoMode,
         }
     }
 
-    // Switches qs tile style back to stock.
-    public static void stockNewTileStyle(IOverlayManager om, int userId) {
+    // Unload all the qs tile styles
+    public static void unlockQsTileStyles(IOverlayManager om, int userId) {
         // skip index 0
         for (int i = 1; i < QS_TILE_THEMES.length; i++) {
             String qstiletheme = QS_TILE_THEMES[i];
