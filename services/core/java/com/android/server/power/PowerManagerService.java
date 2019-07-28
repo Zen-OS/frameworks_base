@@ -899,10 +899,6 @@ public final class PowerManagerService extends SystemService
                 // Shouldn't happen since in-process.
             }
 
-            // Initialize proximity sensor
-            mSensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
-            mProximitySensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
-
             // Go.
             readConfigurationLocked();
             updateSettingsLocked();
