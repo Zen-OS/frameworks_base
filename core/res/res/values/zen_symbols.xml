@@ -119,4 +119,7 @@
   <java-symbol type="integer" name="nav_gesture_swipe_timout" />
   <java-symbol type="integer" name="nav_gesture_move_threshold" />
 
+  <!-- sensor block per-package -->
+  <java-symbol type="array" name="config_blockPackagesSensorDrain" />
+
 </resources>
