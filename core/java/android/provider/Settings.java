@@ -4505,6 +4505,19 @@ public final class Settings {
          */
         public static final String LESS_BORING_HEADS_UP = "less_boring_heads_up";
 
+	/**
+        * Whether allowing pocket service to register sensors and dispatch informations.
+        *   0 = disabled
+        *   1 = enabled
+        * @author Carlo Savignano
+        * @hide
+        */
+        public static final String POCKET_JUDGE = "pocket_judge";
+
+        /** @hide */
+        private static final Validator POCKET_JUDGE_VALIDATOR =
+                BOOLEAN_VALIDATOR;
+
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
@@ -4579,6 +4592,7 @@ public final class Settings {
             BOTTOM_GESTURE_TRIGGER_TIMEOUT,
             BOTTOM_GESTURE_SWIPE_LIMIT,
             BOTTOM_GESTURE_FEEDBACK_DURATION,
+	    POCKET_JUDGE,
         };
 
         /**
@@ -4709,6 +4723,7 @@ public final class Settings {
             PRIVATE_SETTINGS.add(BOTTOM_GESTURE_TRIGGER_TIMEOUT);
             PRIVATE_SETTINGS.add(BOTTOM_GESTURE_SWIPE_LIMIT);
             PRIVATE_SETTINGS.add(BOTTOM_GESTURE_FEEDBACK_DURATION);
+	    PRIVATE_SETTINGS.add(POCKET_JUDGE);
         }
 
         /**
@@ -4813,6 +4828,7 @@ public final class Settings {
             VALIDATORS.put(BOTTOM_GESTURE_TRIGGER_TIMEOUT, BOTTOM_GESTURE_TRIGGER_TIMEOUT_VALIDATOR);
             VALIDATORS.put(BOTTOM_GESTURE_SWIPE_LIMIT, BOTTOM_GESTURE_SWIPE_LIMIT_VALIDATOR);
             VALIDATORS.put(BOTTOM_GESTURE_FEEDBACK_DURATION, BOTTOM_GESTURE_FEEDBACK_DURATION_VALIDATOR);
+	    VALIDATORS.put(POCKET_JUDGE, POCKET_JUDGE_VALIDATOR);
         }
 
         /**
