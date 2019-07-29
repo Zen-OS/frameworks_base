@@ -252,9 +252,6 @@ public class KeyguardUpdateMonitor implements TrustManager.TrustListener {
     private static final int HW_UNAVAILABLE_TIMEOUT = 3000; // ms
     private static final int HW_UNAVAILABLE_RETRY_MAX = 3;
 
-    // For face unlock identification
-    private String lastBroadcastActionReceived;
-
     private PocketManager mPocketManager;
     private boolean mIsDeviceInPocket;
     private final IPocketCallback mPocketCallback = new IPocketCallback.Stub() {
@@ -275,6 +272,13 @@ public class KeyguardUpdateMonitor implements TrustManager.TrustListener {
             }
         }
     };
+
+	public boolean isPocketLockVisible(){
+        return mPocketManager.isPocketLockVisible();
+    }
+
+    // For face unlock identification
+    private String lastBroadcastActionReceived;
 
     private final Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
