@@ -61,6 +61,14 @@ public abstract class TunerService {
         }
     }
 
+    public static boolean parseIntegerSwitch(String value, boolean defaultValue) {
+        try {
+            return value != null ? Integer.parseInt(value) != 0 : defaultValue;
+        } catch (NumberFormatException e) {
+            return defaultValue;
+        }
+    }
+
     public static final void setTunerEnabled(Context context, boolean enabled) {
         userContext(context).getPackageManager().setComponentEnabledSetting(
                 new ComponentName(context, TunerActivity.class),

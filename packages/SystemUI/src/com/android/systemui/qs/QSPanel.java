@@ -277,7 +277,7 @@ public class QSPanel extends LinearLayout implements Tunable, Callback, Brightne
             Log.d(TAG, "Caught exception from Tuner", e);
         }
         if (QS_BRIGHTNESS_POSITION_BOTTOM.equals(key)) {
-            if (newValue == null || Integer.parseInt(newValue) == 0) {
+            if (TunerService.parseIntegerSwitch(newValue, true)) {
                 removeView(mBrightnessView);
                 addView(mBrightnessView, 0);
                 mBrightnessBottom = false;
@@ -287,10 +287,10 @@ public class QSPanel extends LinearLayout implements Tunable, Callback, Brightne
                 mBrightnessBottom = true;
             }
         } else if (QS_SHOW_AUTO_BRIGHTNESS.equals(key)) {
-            mAutoBrightnessEnabled = newValue == null || Integer.parseInt(newValue) != 0;
+            mAutoBrightnessEnabled = TunerService.parseIntegerSwitch(newValue, true);
             updateAutoBrightnessVisibility();
         } else if (QS_AUTO_BRIGHTNESS_RIGHT.equals(key)) {
-            mAutoBrightnessRight = newValue == null || Integer.parseInt(newValue) != 0;
+            mAutoBrightnessRight = TunerService.parseIntegerSwitch(newValue, true);
             updateAutoBrightnessVisibility();
         } else if (QS_SHOW_BRIGHTNESS_BUTTONS.equals(key)) {
             updateViewVisibilityForTuningValue(mMinBrightness, newValue);
@@ -316,7 +316,7 @@ public class QSPanel extends LinearLayout implements Tunable, Callback, Brightne
     }
 
     private void updateViewVisibilityForTuningValue(View view, @Nullable String newValue) {
-        view.setVisibility(newValue == null || Integer.parseInt(newValue) != 0 ? VISIBLE : GONE);
+        view.setVisibility(TunerService.parseIntegerSwitch(newValue, true) ? VISIBLE : GONE);
     }
 
     public void openDetails(String subPanel) {
