@@ -4477,6 +4477,15 @@ public final class Settings {
         /**
          * @hide
          */
+        public static final String BOTTOM_GESTURE_SWIPE_START =
+                "bottom_gesture_navigation_swipe_start";
+
+        private static final Validator BOTTOM_GESTURE_SWIPE_START_VALIDATOR =
+                ANY_INTEGER_VALIDATOR;
+
+        /**
+         * @hide
+         */
         public static final String BOTTOM_GESTURE_FEEDBACK_DURATION = "bottom_gesture_navigation_feedback_duration";
 
         /** @hide */
@@ -4633,6 +4642,7 @@ public final class Settings {
             USE_BOTTOM_GESTURE_NAVIGATION,
             BOTTOM_GESTURE_TRIGGER_TIMEOUT,
             BOTTOM_GESTURE_SWIPE_LIMIT,
+            BOTTOM_GESTURE_SWIPE_START,
             BOTTOM_GESTURE_FEEDBACK_DURATION,
 	    POCKET_JUDGE,
         };
@@ -4765,6 +4775,7 @@ public final class Settings {
             PRIVATE_SETTINGS.add(USE_BOTTOM_GESTURE_NAVIGATION);
             PRIVATE_SETTINGS.add(BOTTOM_GESTURE_TRIGGER_TIMEOUT);
             PRIVATE_SETTINGS.add(BOTTOM_GESTURE_SWIPE_LIMIT);
+            PRIVATE_SETTINGS.add(BOTTOM_GESTURE_SWIPE_START);
             PRIVATE_SETTINGS.add(BOTTOM_GESTURE_FEEDBACK_DURATION);
 	    PRIVATE_SETTINGS.add(POCKET_JUDGE);
         }
@@ -4871,6 +4882,7 @@ public final class Settings {
             VALIDATORS.put(USE_BOTTOM_GESTURE_NAVIGATION, USE_BOTTOM_GESTURE_NAVIGATION_VALIDATOR);
             VALIDATORS.put(BOTTOM_GESTURE_TRIGGER_TIMEOUT, BOTTOM_GESTURE_TRIGGER_TIMEOUT_VALIDATOR);
             VALIDATORS.put(BOTTOM_GESTURE_SWIPE_LIMIT, BOTTOM_GESTURE_SWIPE_LIMIT_VALIDATOR);
+            VALIDATORS.put(BOTTOM_GESTURE_SWIPE_START, BOTTOM_GESTURE_SWIPE_START_VALIDATOR);
             VALIDATORS.put(BOTTOM_GESTURE_FEEDBACK_DURATION, BOTTOM_GESTURE_FEEDBACK_DURATION_VALIDATOR);
 	    VALIDATORS.put(POCKET_JUDGE, POCKET_JUDGE_VALIDATOR);
         }
