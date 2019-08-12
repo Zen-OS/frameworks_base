@@ -147,4 +147,7 @@
     <java-symbol type="style" name="TextAppearancePreferenceCategory" />
     <java-symbol type="style" name="TextAppearanceTitle" />
 
+  <!-- Whether device has a physical display cutout -->
+  <java-symbol type="bool" name="config_physicalDisplayCutout" />
+
 </resources>
