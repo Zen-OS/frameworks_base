@@ -77,6 +77,8 @@
     <item>org.telegram.messenger</item>
     <item>org.telegram.messenger.plus</item>
     <item>com.snapchat.android</item>
+    <item>com.google.android.gms</item>
+    <item>com.spotify.music</item>
   </string-array>
 
   <!-- Defines the sysfs attribute path used by pocket bridge
