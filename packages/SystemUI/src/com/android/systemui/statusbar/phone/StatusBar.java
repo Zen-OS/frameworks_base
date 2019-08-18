@@ -2350,7 +2350,7 @@ public class StatusBar extends SystemUI implements DemoMode,
 
     private void setCutoutOverlay(boolean enable) {
         try {
-            mOverlayManager.setEnabled("com.potato.overlay.hidecutout",
+            mOverlayManager.setEnabled("com.zen.overlay.hidecutout",
                         enable, mLockscreenUserManager.getCurrentUserId());
         } catch (RemoteException e) {
             Log.w(TAG, "Failed to handle cutout overlay", e);
@@ -2359,7 +2359,7 @@ public class StatusBar extends SystemUI implements DemoMode,
 
     private void setStatusBarStockOverlay(boolean enable) {
         try {
-            mOverlayManager.setEnabled("com.potato.overlay.statusbarstock",
+            mOverlayManager.setEnabled("com.zen.overlay.statusbarstock",
                         enable, mLockscreenUserManager.getCurrentUserId());
         } catch (RemoteException e) {
             Log.w(TAG, "Failed to handle statusbar height overlay", e);

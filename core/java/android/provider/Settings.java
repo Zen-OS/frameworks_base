@@ -4266,12 +4266,6 @@ public final class Settings {
                 BOOLEAN_VALIDATOR;
 
         /**
-         * Whether to show the battery info on the lockscreen while charging
-         * @hide
-         */
-        public static final String LOCKSCREEN_BATTERY_INFO = "lockscreen_battery_info";
-
-        /**
          * How many rows to show in the qs panel when in portrait
          * @hide
          */
