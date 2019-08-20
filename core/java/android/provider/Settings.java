@@ -4332,10 +4332,16 @@ public final class Settings {
                BOOLEAN_VALIDATOR;
 
         /**
-         * Wheter to show network traffic indicator in statusbar
+         * Whether to show network traffic indicator (in statusbar by default)
          * @hide
          */
         public static final String NETWORK_TRAFFIC_STATE = "network_traffic_state";
+
+        /**
+         * Whether to show network traffic indicator in expanded header
+         * @hide
+         */
+        public static final String NETWORK_TRAFFIC_VIEW_LOCATION = "network_traffic_view_location";
 
         /**
          * Network traffic inactivity threshold (default is 1 kBs)
@@ -4343,11 +4349,19 @@ public final class Settings {
          */
         public static final String NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD = "network_traffic_autohide_threshold";
 
+        /** @hide */
+        private static final Validator NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD_VALIDATOR =
+                ANY_INTEGER_VALIDATOR;
+
         /**
          * Whether to disable showing arrows in network traffic indicators
          * @hide
          */
         public static final String NETWORK_TRAFFIC_HIDEARROW = "network_traffic_hidearrow";
+
+        /** @hide */
+        private static final Validator NETWORK_TRAFFIC_HIDEARROW_VALIDATOR =
+                BOOLEAN_VALIDATOR;
 
         /**
          * Ambient screen settings
