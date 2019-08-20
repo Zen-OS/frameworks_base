@@ -247,9 +247,7 @@ public class NetworkTrafficSB extends TextView implements StatusIconDisplayable 
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (action == null) return;
-
-            if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION) && mScreenOn) {
+            if (action != null && action.equals(ConnectivityManager.CONNECTIVITY_ACTION) && mScreenOn) {
                 updateSettings();
             } else if (action.equals(Intent.ACTION_SCREEN_ON)) {
                 mScreenOn = true;
@@ -269,12 +267,13 @@ public class NetworkTrafficSB extends TextView implements StatusIconDisplayable 
     }
 
     private void updateSettings() {
-        final ContentResolver resolver = getContext().getContentResolver();
-
-        mTrafficInStatusBar = Settings.System.getIntForUser(resolver,
-                Settings.System.NETWORK_TRAFFIC_VIEW_LOCATION, 1, UserHandle.USER_CURRENT) == 0;
-
         updateVisibility();
+        mTrafficInStatusBar = Settings.System.getIntForUser(mContext.getContentResolver(),
+                Settings.System.NETWORK_TRAFFIC_VIEW_LOCATION, 1,
+                UserHandle.USER_CURRENT) == 0;
+        mHideArrow = Settings.System.getIntForUser(mContext.
+                getContentResolver(), Settings.System.NETWORK_TRAFFIC_HIDEARROW,
+                0, UserHandle.USER_CURRENT) == 1;
         if (mIsEnabled) {
             if (mAttached) {
                 totalRxBytes = TrafficStats.getTotalRxBytes();
@@ -294,11 +293,8 @@ public class NetworkTrafficSB extends TextView implements StatusIconDisplayable 
                 Settings.System.NETWORK_TRAFFIC_STATE, 0,
                 UserHandle.USER_CURRENT) == 1;
         mAutoHideThreshold = Settings.System.getIntForUser(resolver,
-                Settings.System.NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD, 0,
+                Settings.System.NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD, 1,
                 UserHandle.USER_CURRENT);
-        mHideArrow = Settings.System.getIntForUser(resolver,
-                Settings.System.NETWORK_TRAFFIC_HIDEARROW, 0,
-                UserHandle.USER_CURRENT) == 1;
         mTrafficInStatusBar = Settings.System.getIntForUser(resolver,
                 Settings.System.NETWORK_TRAFFIC_VIEW_LOCATION, 1,
                 UserHandle.USER_CURRENT) == 1;
