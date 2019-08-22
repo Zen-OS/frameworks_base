@@ -76,8 +76,6 @@ public class KeyguardStatusView extends GridLayout implements
 
     private TextView mLogoutView;
     private CustomAnalogClock mCustomClockView;
-    private CustomAnalogClock mSpideyClockView;
-    private CustomAnalogClock mAvengersClockView;
     private TypographicClock mTextClock;
     private TextClock mClockView;
     private View mClockSeparator;
@@ -193,13 +191,11 @@ public class KeyguardStatusView extends GridLayout implements
         mClockView = findViewById(R.id.clock_view);
         mClockView.setShowCurrentUserTime(true);
         mCustomClockView = findViewById(R.id.custom_clock_view);
-        mSpideyClockView = findViewById(R.id.spidey_clock_view);
-        mAvengersClockView = findViewById(R.id.avengers_clock_view);
         mTextClock = findViewById(R.id.custom_textclock_view);
         mOwnerInfo = findViewById(R.id.owner_info);
         mKeyguardSlice = findViewById(R.id.keyguard_status_area);
         mClockSeparator = findViewById(R.id.clock_separator);
-        mVisibleInDoze = Sets.newArraySet(mClockView, mKeyguardSlice, mCustomClockView, mSpideyClockView, mAvengersClockView, mTextClock);
+        mVisibleInDoze = Sets.newArraySet(mClockView, mKeyguardSlice, mCustomClockView, mTextClock);
         mTextColor = mClockView.getCurrentTextColor();
 
         int clockStroke = getResources().getDimensionPixelSize(R.dimen.widget_small_font_stroke);
@@ -243,20 +239,6 @@ public class KeyguardStatusView extends GridLayout implements
         customlayoutParams.bottomMargin = getResources().getDimensionPixelSize(
                 R.dimen.keyguard_security_view_top_margin);
         mCustomClockView.setLayoutParams(customlayoutParams);
-
-        // Spidey analog clock
-        RelativeLayout.LayoutParams spideylayoutParams =
-                (RelativeLayout.LayoutParams) mSpideyClockView.getLayoutParams();
-        spideylayoutParams.bottomMargin = getResources().getDimensionPixelSize(
-                R.dimen.keyguard_security_view_top_margin);
-        mSpideyClockView.setLayoutParams(spideylayoutParams);
-
-        // Avengers analog clock
-        RelativeLayout.LayoutParams avengerslayoutParams =
-                (RelativeLayout.LayoutParams) mAvengersClockView.getLayoutParams();
-        avengerslayoutParams.bottomMargin = getResources().getDimensionPixelSize(
-                R.dimen.keyguard_security_view_top_margin);
-        mAvengersClockView.setLayoutParams(avengerslayoutParams);
 
         //Custom Text clock
         RelativeLayout.LayoutParams textlayoutParams =
@@ -402,7 +384,7 @@ public class KeyguardStatusView extends GridLayout implements
         } else if (mClockSelection == 8) {
             mClockView.setFormat12Hour(Html.fromHtml("<strong><font color='#454545'>hh</font></strong><br><font color=" + AccentUtils.getAccentColor(getResources().getColor(R.color.sammy_clock_accent)) + ">mm</font>"));
             mClockView.setFormat24Hour(Html.fromHtml("<strong><font color='#454545'>kk</font></strong><br><font color=" + AccentUtils.getAccentColor(getResources().getColor(R.color.sammy_clock_accent)) + ">mm</font>"));
-        } else if (mClockSelection == 11) {
+        } else if (mClockSelection == 9) {
             mTextClock.onTimeChanged();
         } else {
             mClockView.setFormat12Hour("hh\nmm");
@@ -493,8 +475,6 @@ public class KeyguardStatusView extends GridLayout implements
     private void updateVisibilities() {
         mClockView.setVisibility(View.GONE);
         mCustomClockView.setVisibility(View.GONE);
-        mSpideyClockView.setVisibility(View.GONE);
-	mAvengersClockView.setVisibility(View.GONE);
         mTextClock.setVisibility(View.GONE);
         final int mClockVisibility = mDarkAmount != 1 ? (mShowClock ? View.VISIBLE :
                        View.GONE) : View.VISIBLE;
@@ -518,13 +498,7 @@ public class KeyguardStatusView extends GridLayout implements
                     getResources().getDimensionPixelSize(R.dimen.widget_sammy_accent_font_size));
                 mClockView.setLineSpacing(0, 0.8f);
                 break;
-            case 9: // spidey analog
-                mSpideyClockView.setVisibility(mClockVisibility);
-                break;
-            case 10: // avengers analog
-                mAvengersClockView.setVisibility(mClockVisibility);
-                break;
-            case 11: // custom text clock
+            case 9: // custom text clock
                 mTextClock.setVisibility(mClockVisibility);
                 break;
             case 0: // default digital
@@ -556,13 +530,7 @@ public class KeyguardStatusView extends GridLayout implements
             case 2: // custom analog
                 params.addRule(RelativeLayout.BELOW, R.id.custom_clock_view);
                 break;
-            case 9: // spidey analog
-                params.addRule(RelativeLayout.BELOW, R.id.spidey_clock_view);
-                break;
-            case 10: // avengers analog
-                params.addRule(RelativeLayout.BELOW, R.id.avengers_clock_view);
-                break;
-            case 11: // custom text clock
+            case 9: // custom text clock
                 params.addRule(RelativeLayout.BELOW, R.id.custom_textclock_view);
                 break;
             case 0: // default digital
@@ -602,8 +570,6 @@ public class KeyguardStatusView extends GridLayout implements
             mClockView.setVisibility(mDarkAmount != 1 ? (mShowClock ? View.VISIBLE :
                     View.GONE) : View.VISIBLE);
             mCustomClockView.setVisibility(View.GONE);
-            mSpideyClockView.setVisibility(View.GONE);
-            mAvengersClockView.setVisibility(View.GONE);
             mTextClock.setVisibility(View.GONE);
         } else {
             setStyle();
@@ -671,9 +637,7 @@ public class KeyguardStatusView extends GridLayout implements
         mClockView.setTextColor(blendedTextColor);
         mClockSeparator.setBackgroundColor(blendedTextColor);
         mCustomClockView.setDark(dark);
-	mSpideyClockView.setDark(dark);
-        mAvengersClockView.setDark(dark);
-        if (mClockSelection == 11) {
+        if (mClockSelection == 9) {
             mTextClock.setTextColor(blendedTextColor);
         }
         updateVisibilities();
