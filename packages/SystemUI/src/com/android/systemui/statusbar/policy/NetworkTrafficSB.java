@@ -61,7 +61,6 @@ public class NetworkTrafficSB extends TextView implements StatusIconDisplayable 
 
     private boolean mIsEnabled;
     private boolean mAttached;
-    private boolean mTrafficInStatusBar;
     private long totalRxBytes;
     private long totalTxBytes;
     private long lastUpdateTime;
@@ -74,6 +73,7 @@ public class NetworkTrafficSB extends TextView implements StatusIconDisplayable 
     private int mVisibleState = -1;
     private boolean mTrafficVisible = false;
     private boolean mSystemIconVisible = true;
+
     private boolean mScreenOn = true;
     private boolean mColorIsStatic = false;
 
@@ -171,9 +171,6 @@ public class NetworkTrafficSB extends TextView implements StatusIconDisplayable 
             resolver.registerContentObserver(Settings.System
                     .getUriFor(Settings.System.NETWORK_TRAFFIC_HIDEARROW), false,
                     this, UserHandle.USER_ALL);
-            resolver.registerContentObserver(Settings.System
-                    .getUriFor(Settings.System.NETWORK_TRAFFIC_VIEW_LOCATION), false,
-                    this, UserHandle.USER_ALL);
         }
 
         /*
@@ -269,11 +266,6 @@ public class NetworkTrafficSB extends TextView implements StatusIconDisplayable 
     }
 
     private void updateSettings() {
-        final ContentResolver resolver = getContext().getContentResolver();
-
-        mTrafficInStatusBar = Settings.System.getIntForUser(resolver,
-                Settings.System.NETWORK_TRAFFIC_VIEW_LOCATION, 1, UserHandle.USER_CURRENT) == 0;
-
         updateVisibility();
         if (mIsEnabled) {
             if (mAttached) {
@@ -298,9 +290,6 @@ public class NetworkTrafficSB extends TextView implements StatusIconDisplayable 
                 UserHandle.USER_CURRENT);
         mHideArrow = Settings.System.getIntForUser(resolver,
                 Settings.System.NETWORK_TRAFFIC_HIDEARROW, 0,
-                UserHandle.USER_CURRENT) == 1;
-        mTrafficInStatusBar = Settings.System.getIntForUser(resolver,
-                Settings.System.NETWORK_TRAFFIC_VIEW_LOCATION, 1,
                 UserHandle.USER_CURRENT) == 1;
     }
 
@@ -383,7 +372,7 @@ public class NetworkTrafficSB extends TextView implements StatusIconDisplayable 
 
     private void updateVisibility() {
         if (!Utils.hasNotch(mContext) && mIsEnabled &&
-                mTrafficVisible && mSystemIconVisible && mTrafficInStatusBar) {
+                mTrafficVisible && mSystemIconVisible) {
             setVisibility(View.VISIBLE);
         } else {
             setVisibility(View.GONE);
