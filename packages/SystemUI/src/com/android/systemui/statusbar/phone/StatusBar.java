@@ -548,6 +548,8 @@ public class StatusBar extends SystemUI implements DemoMode,
     protected NotificationLockscreenUserManager mLockscreenUserManager;
     protected NotificationRemoteInputManager mRemoteInputManager;
 
+    private boolean mPocketJudgeAllowFP;
+
     private BroadcastReceiver mWallpaperChangedReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -5549,6 +5551,9 @@ public class StatusBar extends SystemUI implements DemoMode,
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.STOCK_STATUSBAR_IN_HIDE),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.POCKET_JUDGE_ALLOW_FP),
+                    false, this, UserHandle.USER_ALL);
         }
 
         @Override
@@ -5584,6 +5589,9 @@ public class StatusBar extends SystemUI implements DemoMode,
             } else if (uri.equals(Settings.System.getUriFor(Settings.System.DISPLAY_CUTOUT_MODE)) ||
                     uri.equals(Settings.System.getUriFor(Settings.System.STOCK_STATUSBAR_IN_HIDE))) {
                 handleCutout(null);
+            } else if (uri.equals(Settings.System.getUriFor(
+                    Settings.System.POCKET_JUDGE_ALLOW_FP))) {
+                updatePocketJudgeFP();
             }
         }
 
@@ -5601,6 +5609,7 @@ public class StatusBar extends SystemUI implements DemoMode,
             setHeadsUpBlacklist();
 	    setUseLessBoringHeadsUp();
             handleCutout(null);
+            updatePocketJudgeFP();
         }
     }
 
@@ -5663,6 +5672,11 @@ public class StatusBar extends SystemUI implements DemoMode,
                 UserHandle.USER_CURRENT) == 1;
         mEntryManager.setUseLessBoringHeadsUp(lessBoringHeadsUp);
    }
+
+    private void updatePocketJudgeFP() {
+        mPocketJudgeAllowFP = Settings.System.getIntForUser(mContext.getContentResolver(),
+                Settings.System.POCKET_JUDGE_ALLOW_FP, 0, UserHandle.USER_CURRENT) == 1;
+    }
 
     // Switches qs tile style to user selected.
     public static void updateNewTileStyle(IOverlayManager om, int userId, int qsTileStyle) {

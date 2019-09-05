@@ -4610,6 +4610,11 @@ public final class Settings {
         public static final String PIXEL_NAV_ANIMATION = "pixel_nav_animation";
 
         /**
+         * @hide
+         */
+        public static final String POCKET_JUDGE_ALLOW_FP = "pocket_judge_allow_fp";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
