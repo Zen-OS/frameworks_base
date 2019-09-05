@@ -114,4 +114,7 @@
   <!-- Aspect ratio of screen -->
   <item name="config_screenAspectRatio" format="float" type="dimen">2.1</item>
 
+  <!-- Whether device supports internal audio recording -->
+  <bool name="config_hasInternalAudioRecordingSupport">true</bool>
+
 </resources>
