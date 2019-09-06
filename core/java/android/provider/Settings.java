@@ -4614,6 +4614,21 @@ public final class Settings {
          */
         public static final String POCKET_JUDGE_ALLOW_FP = "pocket_judge_allow_fp";
 
+         /**
+         * Whether to enable DOZE only when charging
+         * @hide
+         */
+        public static final String DOZE_ON_CHARGE = "doze_on_charge";
+
+        private static final Validator DOZE_ON_CHARGE_VALIDATOR =
+                BOOLEAN_VALIDATOR;
+
+        /**
+         * hidden stting of the current state of DOZE only when charging
+         * @hide
+         */
+        public static final String DOZE_ON_CHARGE_NOW = "doze_on_charge_now";
+
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
@@ -4693,6 +4708,7 @@ public final class Settings {
 	    POCKET_JUDGE,
             DISPLAY_CUTOUT_MODE,
             STOCK_STATUSBAR_IN_HIDE,
+            DOZE_ON_CHARGE
         };
 
         /**
@@ -4829,6 +4845,7 @@ public final class Settings {
             PRIVATE_SETTINGS.add(DISPLAY_CUTOUT_MODE);
             PRIVATE_SETTINGS.add(STOCK_STATUSBAR_IN_HIDE);
             PRIVATE_SETTINGS.add(FORCE_FULLSCREEN_CUTOUT_APPS);
+            PRIVATE_SETTINGS.add(DOZE_ON_CHARGE);
         }
 
         /**
@@ -4939,6 +4956,7 @@ public final class Settings {
             VALIDATORS.put(DISPLAY_CUTOUT_MODE, DISPLAY_CUTOUT_MODE_VALIDATOR);
             VALIDATORS.put(STOCK_STATUSBAR_IN_HIDE, STOCK_STATUSBAR_IN_HIDE_VALIDATOR);
             VALIDATORS.put(FORCE_FULLSCREEN_CUTOUT_APPS, FORCE_FULLSCREEN_CUTOUT_APPS_VALIDATOR);
+            VALIDATORS.put(DOZE_ON_CHARGE, DOZE_ON_CHARGE_VALIDATOR);
         }
 
         /**
